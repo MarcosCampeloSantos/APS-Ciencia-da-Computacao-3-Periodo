@@ -1,3 +1,4 @@
+import java.awt.Desktop;
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -6,6 +7,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import java.awt.event.ActionEvent;
 import javax.swing.SwingConstants;
 import java.awt.Font;
@@ -17,25 +20,7 @@ public class CorridaInterface extends JFrame {
 	BancoDeDados Banco = new BancoDeDados();
 	Carro carro = new Carro();
 
-	/**
-	 * Launch the application.
-	 */
-	public static void Iniciar() {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					CorridaInterface frame = new CorridaInterface();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 */
+	//CRIA FRAME
 	public CorridaInterface() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
@@ -99,23 +84,42 @@ public class CorridaInterface extends JFrame {
 		lblTempoTotal.setBounds(58, 147, 75, 14);
 		contentPane.add(lblTempoTotal);
 		
-		JButton btnImprimirDados = new JButton("DADOS DA\r\n ULTIMA CORRIDA");
-		btnImprimirDados.addActionListener(new ActionListener() {
+		JButton btnSalvarDados = new JButton("SALVAR DADOS");
+		btnSalvarDados.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				carro.GuardarDados();
-				carro.MostrarDados();
 				JOptionPane.showMessageDialog(null, carro.getImprimir());;
 			}
 		});
-		btnImprimirDados.setBounds(31, 196, 199, 35);
-		contentPane.add(btnImprimirDados);
+		btnSalvarDados.setBounds(31, 196, 199, 35);
+		contentPane.add(btnSalvarDados);
 		
 		JButton btnImprimirRelatorio = new JButton("IMPRIMIR RELATORIO");
 		btnImprimirRelatorio.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				carro.MostrarDados();
+				try {
+					Desktop.getDesktop().open(new File("documento.pdf"));
+				} catch (IOException e1) {
+					System.out.println("Ocorreu um erro: "+e1);
+				}
 			}
 		});
 		btnImprimirRelatorio.setBounds(240, 196, 184, 35);
 		contentPane.add(btnImprimirRelatorio);
 	}
+	
+	//INICIAR INTERFACE
+		public static void Iniciar() {
+			EventQueue.invokeLater(new Runnable() {
+				public void run() {
+					try {
+						CorridaInterface frame = new CorridaInterface();
+						frame.setVisible(true);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			});
+		}
 }

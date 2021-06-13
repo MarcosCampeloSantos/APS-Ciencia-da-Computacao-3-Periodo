@@ -4,7 +4,6 @@ import java.util.Scanner;
 
 public class Carro{
 	
-	Scanner teclado = new Scanner(System.in);
 	Random random = new Random();
 	DecimalFormat formatado = new DecimalFormat("00");
 	BancoDeDados Banco = new BancoDeDados();
@@ -23,47 +22,47 @@ public class Carro{
 	private int milesimos2;
 	private String Dados2 = "00:00:00";
 	
-	
+	//PRIMEIRA VOLTA
 	public void voltaUm() {
+		//GERAR NUMERO ALEATORIO PARA PRIMEIRA VOLTA
 		setMinutos1(random.nextInt(2)+1);
 		setSegundos1(random.nextInt(30)+1);
 		setMilesimos1(random.nextInt(30)+1);
+		//FORMATANDO OS DADOS GERADOS PARA PRIMEIRA VOLTA
 		setDados1(formatado.format(getMinutos1())+":"+formatado.format(getSegundos1())+":"+formatado.format(getMilesimos1()));
+		//CALCULANDO O TOTAL DAS VOLTAS
 		setTotMinut(getMinutos1() + getMinutos2());
 		setTotSegun(getSegundos1() + getSegundos2());
 		setTotMile(getMilesimos1() + getMilesimos2());
 		setTotal(formatado.format(getTotMinut())+":"+formatado.format(getTotSegun())+":"+formatado.format(getTotMile()));
-		System.out.println("============RESULTADO==============");
-		System.out.println("1ª Volta: "+getDados1()+"\n2ª Volta: "+getDados2()+"\nTempo Total: "+getTotal());
 	}
-	
+	//SEGUNDA VOLTA
 	public void voltaDois() {
+		//GERAR NUMERO ALEATORIO PARA SEGUNDA VOLTA
 		setMinutos2(random.nextInt(2)+1);
 		setSegundos2(random.nextInt(30)+1);
 		setMilesimos2(random.nextInt(30)+1);
+		//FORMATANDO OS DADOS GERADOS PARA SEGUNDA VOLTA
 		setDados2(formatado.format(getMinutos2())+":"+formatado.format(getSegundos2())+":"+formatado.format(getMilesimos2()));
+		//CALCULANDO O TOTAL DAS VOLTAS
 		setTotMinut(getMinutos1() + getMinutos2());
 		setTotSegun(getSegundos1() + getSegundos2());
 		setTotMile(getMilesimos1() + getMilesimos2());
 		setTotal(formatado.format(getTotMinut())+":"+formatado.format(getTotSegun())+":"+formatado.format(getTotMile()));
-		System.out.println("\n============RESULTADO==============");
-		System.out.println("1ª Volta: "+getDados1()+"\n2ª Volta: "+getDados2()+"\nTempo Total: "+getTotal());
 	}
-	
+	//GUARDANDO OS DADOS NO BANCO
 	public void GuardarDados() {
+		//CONECTA NO BANCO
 		Banco.conectar();
+		//VERIFICANDO SE ESTÁ CONECTADO E GUARDANDO OS DADOS
 		if(Banco.estaConectado() && getDados1() != "00:00:00" && getDados2() != "00:00:00") {
 			Banco.inserirVoltas(getDados1(), getDados2(), getTotal());
-			System.out.println("============BANCO DE DADOS==============");
-			this.setImprimir("============BANCO DE DADOS==============\n\n1ª Volta: "+getDados1()+"\n2ª Volta: "+getDados2()+"\nTempo Total: "+getTotal()+"\n\nDados Guardados com Sucesso!!");
-			System.out.println("Dados Guardados com Sucesso!!");
+			this.setImprimir("============BANCO DE DADOS==============\n\n1ª Volta: "+getDados1()+"\n2ª Volta: "+getDados2()+"\nTempo Total: "+getTotal()+"\n\nDADOS SALVOS COM SUCESSO!!");
 		}else {
-			System.out.println("============BANCO DE DADOS==============");
-			this.setImprimir("ERRO: Banco de Dados não está conectado ou os dados estão Incompletos.");
-			System.out.println(getImprimir());
+			this.setImprimir("ERRO: Banco de Dados não está conectado ou os dados estão Incompletos!!");
 		}
 	}
-	
+	//CONCTAR NO BANCO E GERAR RELATORIO
 	public void MostrarDados() {
 		Banco.conectar();
 		Banco.listarVoltas();
